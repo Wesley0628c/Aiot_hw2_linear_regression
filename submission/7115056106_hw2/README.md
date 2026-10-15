@@ -25,9 +25,9 @@
 
 ---
 
-## 核心實驗結果 (Key Results)
+## 核心實驗結果與視覺化呈現 (Key Results & Visual Gallery)
 
-### 模型表現評估 (Test Set Performance)
+### 1. 模型表現評估 (Test Set Performance)
 
 | 模型名稱 | 輸入特徵數 | 測試集 MAE | 測試集 RMSE | 測試集 R² | 解釋變異量 |
 |---|:---:|:---:|:---:|:---:|:---:|
@@ -36,7 +36,46 @@
 
 > **結論摘要**：20 項環境特徵能解釋超過 **84.35%** 的洪水機率變異。在 1-SE 規則下，Lasso 維持保留 20 項特徵，印證各項環境與工程指標在區域致災評估中的均衡重要性。
 
-### 統計診斷與預測區間 (Diagnostics)
+---
+
+### 2. 核心成果照片與圖表成果展 (Visual Results Gallery)
+
+#### (1) 模型預測與 95% 個別預測區間 (Prediction & Uncertainty)
+
+| 測試集實際值 vs 預測值散布圖 ($R^2 = 0.8435$) | 95% 個別新觀測預測區間覆蓋圖 (涵蓋率 94.28%) |
+|:---:|:---:|
+| ![實際值與預測值散布圖](outputs/figures/actual_vs_predicted.png) | ![95%個別預測區間覆蓋圖](outputs/figures/selected_model_95_prediction_intervals.png) |
+| **圖 1：預測對比圖**<br/>10,000 筆測試集散布點緊密對稱分佈於 $y = \hat{y}$ 理想對角線兩側，無明顯非線性偏向。 | **圖 2：95% 預測區間涵蓋圖**<br/>理論名目值 95.0%，實測涵蓋率達 **94.28%**，平均區間寬度約 **0.0785**（$\pm 0.0393$ 機率值）。 |
+
+---
+
+#### (2) 特徵工程與殘差診斷 (Feature Selection & Assumptions)
+
+| Lasso 5-fold CV 特徵選擇與係數收縮 | 殘差高斯-馬可夫假設四合一診斷圖 |
+|:---:|:---:|
+| ![Lasso特徵選擇與係數收縮圖](outputs/figures/lasso_feature_selection.png) | ![殘差診斷四合一圖](outputs/figures/selected_model_residual_diagnostics.png) |
+| **圖 3：Lasso 特徵選擇歷程**<br/>依 1-SE 規則（$\alpha \approx 0.000391$）搜尋，20 項特徵係數均未歸零（各約 0.0056），印證均衡重要性。 | **圖 4：殘差檢定四合一圖**<br/>DW=2.0047（無自相關）；JB 與 BP 檢定拒絕常態與等變異；Cook's D 遠小於 1（無破壞性影響點）。 |
+
+---
+
+#### (3) 資料探索與相關性分析 (Exploratory Data Analysis)
+
+| 預測目標變數 `FloodProbability` 分布 | 20 項環境特徵 Pearson 相關係數矩陣熱力圖 |
+|:---:|:---:|
+| ![目標值分布圖](outputs/figures/target_distribution.png) | ![相關係數矩陣熱力圖](outputs/figures/correlation_heatmap.png) |
+| **圖 5：目標分布圖**<br/>50,000 筆樣本呈現對稱鐘形分佈（平均 0.5044、標準差 0.0510），無雙峰或極端截斷。 | **圖 6：相關係數矩陣熱力圖**<br/>特徵間相關係數近乎為 0（正交無共線性），與目標呈現穩定正相關（$r \approx 0.18 \sim 0.20$）。 |
+
+---
+
+#### (4) 20 項原始輸入特徵之數值分布
+
+![20特徵分布圖](outputs/figures/feature_distributions.png)
+
+> **圖 7：20 特徵分布全景圖**<br/>涵蓋氣候（MonsoonIntensity）、水系（RiverManagement）、土地利用（Deforestation, Urbanization）、防洪工程（DamsQuality, DrainageSystems）與治理脆弱度（IneffectiveDisasterPreparedness, PoliticalFactors）等 20 項數值評分尺度。
+
+---
+
+### 3. 統計診斷與預測區間詳細指標 (Detailed Diagnostics)
 
 - **95% 個別預測區間涵蓋率**：10,000 筆未見測試集上達到 **94.28%**（名目值 95.0%），平均區間寬度約 **0.0785**（$\pm 3.9$ 個百分點）。
 - **殘差假設檢定結果**：
@@ -44,7 +83,7 @@
   - **Jarque-Bera 檢定**：統計量 5653.83，$p = 0.000 < 0.05$（殘差呈現微幅偏態與高狹峰，拒絕常態性假設）。
   - **Breusch-Pagan 檢定**：LM 統計量 1701.03，$p = 0.000 < 0.05$（存在微幅異質變異，拒絕等變異假設）。
   - **Cook's Distance**：最大值僅 0.002688，遠小於 1.0，無破壞性影響點。
-- **誠實揭露**：由於常態性與等變異性未完全成立，95% 預測區間應審慎視為高維線性投影下之優良近似。
+- **學術誠實揭露**：由於常態性與等變異性未完全成立，95% 預測區間應審慎視為高維線性投影下之優良近似。
 
 ---
 
@@ -80,7 +119,7 @@ aiot_hw2_linear_regression/
 │   ├── 7115056106_hw2_report_with_appendix.pdf # 主報告結合 GPT 對話附錄之合併 PDF (28 頁)
 │   └── generate_report.py       # 跨平台 PDF 報告編譯生成腳本
 └── submission/                  # 作業正式打包壓縮檔與相關繳交附件
-    ├── 7115056106_hw2.zip       # 最終作業壓縮檔
+    ├── 7115056106_hw2.zip       # 最終作業壓縮檔 (8.06 MB)
     └── 7115056106_hw2/          # 解壓對應之作業交付完整目錄
 ```
 
@@ -129,64 +168,6 @@ python3 7115056106_hw2.py
 python3 report/generate_report.py
 ```
 本腳本支援跨平台 CJK 中文字型自動搜尋（macOS、Linux、Windows），並支援透過環境變數 `REPORT_FONT_PATH` 自訂字型路徑。
-
----
-
-## 主要分析成果與視覺化呈現 (Visualized Results)
-
-本專案所有圖表均由 `python3 7115056106_hw2.py` 自動分析生成，並完整儲存於 `outputs/figures/` 目錄中：
-
-### 1. 資料探索與相關性分析 (EDA & Correlations)
-
-#### (1) 目標變數分布 (`FloodProbability`)
-目標變數呈現極佳的單峰對稱鐘形分佈（平均值 0.5044、標準差 0.0510、中位數 0.5050），無雙峰或截斷異常。
-
-![目標值分布圖](outputs/figures/target_distribution.png)
-
-#### (2) 20 項環境與工程特徵數值分布
-20 個特徵皆為評分尺度（取值介於 0 至 17，多數集中於 4 至 8 分），呈現均勻且對稱之整數分布。
-
-![20特徵分布圖](outputs/figures/feature_distributions.png)
-
-#### (3) Pearson 相關係數矩陣熱力圖
-特徵彼此間之相關係數近乎為 0（介於 -0.01 至 +0.01），顯示特徵間彼此高度正交，無多重共線性風險；各特徵與目標變數則呈現穩定正相關（$r \approx 0.18 \sim 0.20$）。
-
-![相關係數矩陣熱力圖](outputs/figures/correlation_heatmap.png)
-
----
-
-### 2. Lasso 正則化特徵選擇 (Feature Selection with 1-SE Rule)
-
-在 40,000 筆訓練集進行 5-fold 交叉驗證（Pipeline 內 fit 標準化），依據 **One-Standard-Error 規則**選定最佳收縮強度 $\alpha \approx 0.000391$。由於 20 項特徵均對洪水機率具有實質貢獻（各係數約 0.0056），所有特徵在 1-SE 門檻下均未被完全壓縮歸零，成功驗證各項環境與基礎設施因子的均衡重要性。
-
-![Lasso特徵選擇與係數收縮圖](outputs/figures/lasso_feature_selection.png)
-
----
-
-### 3. 模型預測評估 (Model Evaluation on 10,000 Test Set)
-
-#### (1) 測試集真實值 vs 預測值對比散布圖
-模型在 10,000 筆未見測試集上達到 **$R^2 = 0.8435$**（變異解釋力達 84.35%），散布點緊密對稱分佈於 $y = \hat{y}$ 理想對角線兩側，無明顯非線性偏向。
-
-![實際值與預測值散布圖](outputs/figures/actual_vs_predicted.png)
-
-#### (2) 95% 個別新觀測預測區間 (Prediction Interval)
-利用 statsmodels OLS 針對測試樣本建立 95% 個別未來觀測預測區間（包含參數估計與隨機誤差項變異 $\sigma^2$）。在 10,000 筆測試集上，實測涵蓋率達 **94.28%**（理論名目值 95.0%），平均區間寬度約 **0.0785**（$\pm 0.0393$ 機率值），具備極高的實用工程參考價值。
-
-![95%個別預測區間覆蓋圖](outputs/figures/selected_model_95_prediction_intervals.png)
-
----
-
-### 4. 殘差假設診斷 (Residual Diagnostics)
-
-殘差診斷四合一圖驗證高斯-馬可夫（Gauss-Markov）假設：
-- **Durbin-Watson = 2.0047**：樣本隨機獨立，無一階自相關。
-- **Jarque-Bera 檢定 ($p = 0.000 < 0.05$)**：殘差呈現右偏 (Skewness=0.686) 與高狹峰 (Kurtosis=4.23)，拒絕常態性假設。
-- **Breusch-Pagan 檢定 ($p = 0.000 < 0.05$)**：極值處存在輕微異質變異，拒絕等變異假設。
-- **Cook's Distance**：最大值僅 0.002688，遠小於 1.0，無破壞性影響點。
-- **學術誠實提醒**：在龐大樣本量（$n=40,000$）下微小偏離極易在統計上顯著，因此 95% 預測區間應審慎視為高維線性投影下之良好近似。
-
-![殘差診斷四合一圖](outputs/figures/selected_model_residual_diagnostics.png)
 
 ---
 
