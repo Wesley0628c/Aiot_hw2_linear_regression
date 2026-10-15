@@ -25,11 +25,50 @@ from reportlab.platypus import (
 )
 
 
+import os
+
 REPORT_DIR = Path(__file__).resolve().parent
 SOURCE = REPORT_DIR / "7115056106_hw2_report.md"
 OUTPUT = REPORT_DIR / "7115056106_hw2_report.pdf"
-FONT_PATH = Path("/System/Library/Fonts/Supplemental/Arial Unicode.ttf")
-FONT_NAME = "ArialUnicode"
+MERGED_OUTPUT = REPORT_DIR / "7115056106_hw2_report_with_appendix.pdf"
+FONT_NAME = "ReportFontZH"
+
+CANDIDATE_FONT_PATHS = [
+    # macOS
+    Path("/System/Library/Fonts/Supplemental/Arial Unicode.ttf"),
+    Path("/Library/Fonts/Arial Unicode.ttf"),
+    Path("/System/Library/Fonts/PingFang.ttc"),
+    Path("/System/Library/Fonts/STHeiti Light.ttc"),
+    Path("/System/Library/Fonts/STHeiti Medium.ttc"),
+    # Linux
+    Path("/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"),
+    Path("/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc"),
+    Path("/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc"),
+    Path("/usr/share/fonts/truetype/wqy/wqy-microhei.ttc"),
+    # Windows
+    Path("C:/Windows/Fonts/msyh.ttc"),
+    Path("C:/Windows/Fonts/simsun.ttc"),
+]
+
+
+def resolve_font() -> Path:
+    """解析可用的繁體/中文字型檔案，支援跨平台搜尋與環境變數自訂。"""
+    custom_path = os.environ.get("REPORT_FONT_PATH")
+    if custom_path:
+        p = Path(custom_path)
+        if p.is_file():
+            return p
+        raise FileNotFoundError(
+            f"環境變數 REPORT_FONT_PATH 指定的字型檔案不存在：{custom_path}"
+        )
+    for candidate in CANDIDATE_FONT_PATHS:
+        if candidate.is_file():
+            return candidate
+    candidates_str = "\n  - ".join(str(p) for p in CANDIDATE_FONT_PATHS)
+    raise FileNotFoundError(
+        "無法在系統中找到預設的中文字型檔案。請安裝適當的 CJK 字型（如 Noto Sans CJK 或 微軟雅黑），"
+        f"或透過環境變數 REPORT_FONT_PATH 指定字型檔案路徑。\n已搜尋的預設路徑包含：\n  - {candidates_str}"
+    )
 
 
 def inline_markup(text: str) -> str:
@@ -160,10 +199,37 @@ def build_story(markdown: str) -> list:
     return story
 
 
+def merge_with_appendix(report_path: Path, output_path: Path) -> bool:
+    """若存在 GPT 對話紀錄 PDF，則生成包含主報告與附錄的合併 PDF。"""
+    appendix_candidates = [
+        REPORT_DIR.parent / "submission" / "7115056106_hw2" / "7115056106_GPT_conversation.pdf",
+        REPORT_DIR.parent / "materials" / "7115056106_GPT_conversation.pdf",
+    ]
+    appendix_path = None
+    for cand in appendix_candidates:
+        if cand.is_file():
+            appendix_path = cand
+            break
+    if not appendix_path:
+        return False
+    try:
+        import pypdf
+        writer = pypdf.PdfWriter()
+        for pdf_file in [report_path, appendix_path]:
+            reader = pypdf.PdfReader(str(pdf_file))
+            for page in reader.pages:
+                writer.add_page(page)
+        with open(output_path, "wb") as f:
+            writer.write(f)
+        return True
+    except Exception as e:
+        print(f"Warning: 合併附錄 PDF 失敗 ({e})，保留獨立主報告。")
+        return False
+
+
 def main() -> None:
-    if not FONT_PATH.is_file():
-        raise FileNotFoundError(f"找不到中文字型：{FONT_PATH}")
-    pdfmetrics.registerFont(TTFont(FONT_NAME, str(FONT_PATH)))
+    font_path = resolve_font()
+    pdfmetrics.registerFont(TTFont(FONT_NAME, str(font_path)))
     document = SimpleDocTemplate(
         str(OUTPUT),
         pagesize=A4,
@@ -173,10 +239,13 @@ def main() -> None:
         bottomMargin=1.8 * cm,
         title="HW2 多元線性回歸分析報告",
         author="7115056106",
-        subject="Red Wine Quality CRISP-DM",
+        subject="CRISP-DM Regression Report",
     )
     document.build(build_story(SOURCE.read_text(encoding="utf-8")), onFirstPage=page_number, onLaterPages=page_number)
     print(f"report_pdf={OUTPUT}")
+
+    if merge_with_appendix(OUTPUT, MERGED_OUTPUT):
+        print(f"merged_report_pdf={MERGED_OUTPUT}")
 
 
 if __name__ == "__main__":

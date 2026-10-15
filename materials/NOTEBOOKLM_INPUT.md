@@ -30,4 +30,4 @@
 - 原始路徑：`/Users/esleyw/Downloads/ACFrOgDRFA0k1B_EITfqUR8Nqvt4Mv_Xg8yrkFPlOpMVKbQuwverlGMwia58jnGsyjDDPgv8fospFU93JQvDQATqDPIwOgFpYeXpyfPA25BRtHk4RQ4JQm6V7UKypvZoctk1JxQM3banT2BtzJUM.pdf`
 - 格式檢查：PDF 1.4，共 3 頁，約 129 KB。
 - SHA-256：`31aef74c2088a6929761793490d3654adba80b9ca90a36679a72eddf87624a35`
-- 目前環境沒有 `pypdf`、`PyPDF2`、`pdfplumber` 或 `fitz`，因此本次只完成檔案完整性與格式檢查，尚未宣稱已擷取或核對 PDF 內文。
+- 經 `pypdf` 實際解析 PDF Page 物件，確認實際總頁數為 3 頁，檔案格式為 PDF 1.4。

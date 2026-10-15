@@ -35,10 +35,10 @@
 ### 統計診斷與預測區間 (Diagnostics)
 
 - **95% 預測區間經驗涵蓋率**：測試集上達到 **94.64%**（理論值 95%）。
-- **殘差診斷**：
-  - Durbin-Watson：~2.01（無顯著一階自相關）。
-  - Jarque-Bera 檢定 $p < 0.05$（因品質分數為整數離散值且兩端樣本稀少，殘差呈現微偏）。
-  - Breusch-Pagan 檢定 $p < 0.05$（存在些微異質變異）。
+- **殘差診斷（舊版紅酒實測數據）**：
+  - Durbin-Watson：實測統計量為 **1.688651**（依賴列排序，橫斷面資料無自然時間序列，不可僅憑數值接近 2 逕行宣稱無顯著自相關）。
+  - Jarque-Bera 檢定：$p = 1.11 \times 10^{-8} < 0.05$（殘差非常態，未通過常態性假設）。
+  - Breusch-Pagan 檢定：$p = 8.25 \times 10^{-6} < 0.05$（存在異質變異，未通過等變異假設）。
 
 ---
 
@@ -54,9 +54,9 @@ aiot_hw2_linear_regression/
 ├── TODO.md                      # 開發任務追蹤清單
 ├── data/
 │   ├── raw/
-│   │   └── winequality-red.csv  # Kaggle 原始紅酒品質資料集
+│   │   └── winequality-red.csv  # Kaggle 原始紅酒品質資料集 (舊版，待換 S4E5)
 │   ├── processed/
-│   │   ├── train.csv            # 劃分之訓練集 (含 group_id)
+│   │   ├── train.csv            # 劃分之獨立訓練集
 │   │   └── test.csv             # 劃分之獨立測試集
 │   ├── README.md                # 資料集欄位定義與來源說明
 │   └── PREPARATION.md           # 資料前處理與切分邏輯規格書
@@ -130,18 +130,19 @@ python3 report/generate_report.py
 
 ## 主要產出圖表說明 (Key Figures)
 
-- **`outputs/figures/correlation_heatmap.png`**：11 項特徵與品質之相關係數矩陣。
-- **`outputs/figures/lasso_feature_selection.png`**：Lasso 正則化路徑與交叉驗證 MSE / 1-SE 閥值選擇圖。
-- **`outputs/figures/actual_vs_predicted.png`**：測試集真實值 vs 預測值對比散布圖。
-- **`outputs/figures/selected_model_95_prediction_intervals.png`**：精簡模型之個別觀測 95% 預測區間覆蓋分布圖。
-- **`outputs/figures/selected_model_residual_diagnostics.png`**：殘差分布、Q-Q 圖與異質變異檢驗診斷圖。
+- **`outputs/figures/correlation_heatmap.png`**：輸入特徵與預測目標之相關係數矩陣熱力圖。
+- **`outputs/figures/lasso_feature_selection.png`**：Lasso 特徵選擇之標準化迴歸係數長條圖（依 1-SE 門檻篩選出非零入選特徵與歸零剔除特徵）。
+- **`outputs/figures/actual_vs_predicted.png`**：獨立測試集真實值 vs 預測值對比散布圖（附理想預測 $y = \hat{y}$ 對角線）。
+- **`outputs/figures/selected_model_95_prediction_intervals.png`**：精簡模型之個別觀測 95% 預測區間（Prediction Interval）覆蓋分布圖。
+- **`outputs/figures/selected_model_residual_diagnostics.png`**：殘差分布直方圖、常態 Q-Q 圖、殘差 vs 擬合值等異質變異診斷圖。
 
 ---
 
 ## 繳交附件聲明 (Submission Note)
 
 本專案於 `submission/` 資料夾內包含符合課程繳交規格之 ZIP 檔案與相關 PDF 紀錄：
-- `7115056106_hw2_report.pdf`：主研究報告
-- `7115056106_GPT_conversation.pdf`：作業輔助對話紀錄
-- `7115056106_NotebookLM_export.pdf`：NotebookLM 研究紀錄
-- SHA-256 校驗碼與來源對應詳見 [ASSIGNMENT_INPUTS.md](file:///Users/esleyw/Desktop/aiot_hw2_linear_regression/materials/ASSIGNMENT_INPUTS.md)。
+- `7115056106_hw2_report.pdf`：主研究報告（12 頁）
+- `7115056106_hw2_report_with_appendix.pdf`：主報告結合 GPT 對話附錄之合併 PDF（34 頁）
+- `7115056106_GPT_conversation.pdf`：作業輔助對話紀錄原始檔（22 頁）
+- `7115056106_NotebookLM_export.pdf`：NotebookLM 研究紀錄原始檔（3 頁）
+- SHA-256 校驗碼與來源對應詳見 [ASSIGNMENT_INPUTS.md](materials/ASSIGNMENT_INPUTS.md)。

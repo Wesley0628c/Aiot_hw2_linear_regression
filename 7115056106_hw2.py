@@ -450,6 +450,14 @@ def evaluate_models(
     selected_features = selection_summary["features_after"]
     actual = test_data[TARGET].to_numpy()
 
+    baseline_summary = json.loads(
+        (tables_dir / "baseline_model_summary.json").read_text(encoding="utf-8")
+    )
+    baseline_feature_count = int(baseline_summary.get("feature_count", len(baseline_summary.get("features", []))))
+    selected_feature_count = int(selection_summary.get("feature_count_after", len(selected_features)))
+    baseline_model_name = f"Baseline OLS ({baseline_feature_count} features)"
+    selected_model_name = f"Selected OLS ({selected_feature_count} features)"
+
     def regression_metrics(name: str, prediction: np.ndarray, feature_count: int) -> dict:
         return {
             "model": name,
@@ -459,16 +467,17 @@ def evaluate_models(
             "R2": float(r2_score(actual, prediction)),
         }
 
+    pred_col = f"predicted_{TARGET}"
     metrics = [
         regression_metrics(
-            "Baseline OLS (11 features)",
-            baseline_predictions["predicted_quality"].to_numpy(),
-            11,
+            baseline_model_name,
+            baseline_predictions[pred_col].to_numpy(),
+            baseline_feature_count,
         ),
         regression_metrics(
-            "Selected OLS (4 features)",
-            selected_predictions["predicted_quality"].to_numpy(),
-            len(selected_features),
+            selected_model_name,
+            selected_predictions[pred_col].to_numpy(),
+            selected_feature_count,
         ),
     ]
     metrics_table = pd.DataFrame(metrics)
@@ -482,7 +491,7 @@ def evaluate_models(
     interval_table = pd.DataFrame(
         {
             "test_row": np.arange(len(test_data)),
-            "actual_quality": actual,
+            f"actual_{TARGET}": actual,
             "predicted_mean": prediction_frame["mean"].to_numpy(),
             "mean_ci_lower_95": prediction_frame["mean_ci_lower"].to_numpy(),
             "mean_ci_upper_95": prediction_frame["mean_ci_upper"].to_numpy(),
@@ -491,9 +500,9 @@ def evaluate_models(
         }
     )
     interval_table["inside_prediction_interval"] = (
-        interval_table["actual_quality"] >= interval_table["prediction_interval_lower_95"]
+        interval_table[f"actual_{TARGET}"] >= interval_table["prediction_interval_lower_95"]
     ) & (
-        interval_table["actual_quality"] <= interval_table["prediction_interval_upper_95"]
+        interval_table[f"actual_{TARGET}"] <= interval_table["prediction_interval_upper_95"]
     )
     interval_table.to_csv(tables_dir / "selected_model_prediction_intervals.csv", index=False)
 
@@ -506,7 +515,7 @@ def evaluate_models(
     influence = ols_result.get_influence()
     cooks_distance = influence.cooks_distance[0]
     diagnostics = {
-        "evaluated_model": "Selected OLS (4 features)",
+        "evaluated_model": selected_model_name,
         "interval_type": "95% prediction interval for an individual future observation",
         "prediction_interval_alpha": 0.05,
         "prediction_interval_test_coverage": float(
@@ -539,18 +548,18 @@ def evaluate_models(
 
     fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharex=True, sharey=True)
     prediction_sets = [
-        ("Baseline OLS (11 features)", baseline_predictions["predicted_quality"]),
-        ("Selected OLS (4 features)", selected_predictions["predicted_quality"]),
+        (baseline_model_name, baseline_predictions[pred_col]),
+        (selected_model_name, selected_predictions[pred_col]),
     ]
     lower = min(actual.min(), *(prediction.min() for _, prediction in prediction_sets)) - 0.2
     upper = max(actual.max(), *(prediction.max() for _, prediction in prediction_sets)) + 0.2
     for ax, (title, prediction) in zip(axes, prediction_sets):
         ax.scatter(actual, prediction, alpha=0.55, color="#0A9396", edgecolor="none")
         ax.plot([lower, upper], [lower, upper], linestyle="--", color="#9B2226")
-        ax.set(title=title, xlabel="Actual quality", ylabel="Predicted quality")
+        ax.set(title=title, xlabel=f"Actual {TARGET}", ylabel=f"Predicted {TARGET}")
         ax.set_xlim(lower, upper)
         ax.set_ylim(lower, upper)
-    fig.suptitle("Actual vs. Predicted Quality on the Fixed Test Set")
+    fig.suptitle(f"Actual vs. Predicted {TARGET} on the Fixed Test Set")
     fig.tight_layout()
     fig.savefig(figures_dir / "actual_vs_predicted.png", dpi=160)
     plt.close(fig)

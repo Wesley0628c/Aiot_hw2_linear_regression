@@ -109,3 +109,34 @@
 - 實際輸出結果：獨立重跑後的 16 份表格及兩份資料切分與 ZIP 隨附版本完全一致；七張圖皆可開啟；報告指標與重建結果一致；三份 PDF 均存在。全部 Step 0–10 均已完成。
 - 產生或修改檔案：`TODO.md`、`PROJECT_LOG.md`，以及同步更新後的 `submission/7115056106_hw2/TODO.md`、`submission/7115056106_hw2/PROJECT_LOG.md`、`submission/7115056106_hw2.zip`。
 - 尚未解決的問題或限制：無必要交付項目未完成。模型本身的統計限制（離散順序目標、殘差非常態、異質變異、品質兩端樣本少）已在報告揭露，不能因驗收成功而視為消失。
+
+## 規格升級與精確性查核紀錄（2026-10-15）
+
+- 狀態：部分已完成（程式架構動態化、文件一致性修訂、跨平台字型與合併報告產出已完成；新資料集與新 AI 附件維持待使用者提供未勾選狀態）
+- 實際修改或完成項目：
+  1. **資料集規格查核**：確認舊版紅酒資料集（11 個原始特徵）不符合本次「14–20 個原始輸入特徵（排除 Target 與 ID）」之嚴格條件。優先查核 Kaggle Playground Series S4E5（Flood Prediction）資料集，確認其具備 1 個 `id` 欄位、1 個連續預測目標 `FloodProbability`，以及恰好 20 個原始理化／環境數值特徵（`MonsoonIntensity`、`TopographyDrainage`、`RiverManagement` 等），嚴格滿足 $14 \le \text{features} \le 20$ 與 $13 < \text{features} < 40$。
+  2. **文件一致性修正**：
+     - 修正 `README.md` 中殘差診斷 Durbin-Watson 統計量為程式實際輸出值 `1.688651`（舊版 README 誤寫為 `~2.01`），並依統計學嚴格規範更正說明：橫斷面觀測無自然時序，不得僅憑數值接近 2 逕行宣稱無顯著自相關。
+     - 修正 `README.md` 中 `data/processed/train.csv` 不實說明，移除「含 group_id」描述。
+     - 修正 `README.md` 中圖表說明：將 `lasso_feature_selection.png` 依實際產出正確定名為「Lasso 標準化迴歸係數長條圖（非正則化路徑或單純 CV 曲線）」。
+     - 修正 `README.md` 中所有 `file:///Users/...` 絕對路徑為相容性佳之相對連結（如 `materials/ASSIGNMENT_INPUTS.md`）。
+  3. **附件實際頁數查核與狀態更新**：
+     - 安裝並使用 `pypdf` 與 macOS `mdls` 實際解析 PDF 內部 Page 物件，確認 `7115056106_GPT_conversation.pdf` 實際頁數為 **22 頁**（而非原簡略紀錄之 8 頁），`7115056106_NotebookLM_export.pdf` 為 **3 頁**，主報告為 **12 頁**。
+     - 更新 `materials/ASSIGNMENT_INPUTS.md`，納入更正註記，並將附件「尚未打包」的過期狀態更新為已完成歸檔與命名。
+  4. **跨平台 PDF 報告生成器重構**：
+     - 重構 `report/generate_report.py`：移除單一 macOS `Arial Unicode.ttf` 絕對路徑綁定，建立多作業系統候選路徑搜尋機制（macOS / Linux / Windows），並支援 `REPORT_FONT_PATH` 環境變數自訂；若無可用字型則提供清晰安裝引導。
+     - 於報告生成腳本整合 `pypdf`，在產生主報告 `7115056106_hw2_report.pdf`（12 頁）之同時，自動併合真實 GPT 對話附錄，產出 `7115056106_hw2_report_with_appendix.pdf`（共 34 頁），並同步保存至 `report/` 與 `submission/7115056106_hw2/`。
+  5. **主程式模型標籤動態化**：
+     - 重構 `7115056106_hw2.py` 中的評估與圖表繪製邏輯，徹底移除寫死之 `"Baseline OLS (11 features)"` 與 `"Selected OLS (4 features)"`，改由模型摘要與選定特徵即時計算動態字串，支援任意特徵維度。
+  6. **新主題 NotebookLM 研究指引**：
+     - 建立 `materials/FLOOD_NOTEBOOKLM_GUIDE.md`，提供針對 Kaggle 洪水預測主題之建議文獻來源、提問引導與匯出規格；堅守學術誠信，未取得真實匯出檔前絕不以 GPT 虛構 NotebookLM 輸出。
+- 測試指令或方法：
+  - `python3 -c "import pypdf; ..."` 驗證三份 PDF 實際頁數分別為 22、3、12 頁。
+  - `PYTHONPYCACHEPREFIX=/tmp/aiot_hw2_pycache python3 -m py_compile 7115056106_hw2.py report/generate_report.py` 語法編譯測試。
+  - `python3 report/generate_report.py` 驗證字型解析、主報告生成與附錄合併產出（輸出 12 頁與 34 頁 PDF）。
+  - `MPLCONFIGDIR=/tmp/aiot_hw2_matplotlib PYTHONPYCACHEPREFIX=/tmp/aiot_hw2_pycache python3 7115056106_hw2.py` 驗證主程式動態標籤在既有資料下執行成功且產出完全相容之表格與圖表。
+- 測試是否成功：成功。
+- 產生或修改檔案：`report/generate_report.py`、`7115056106_hw2.py`、`README.md`、`materials/ASSIGNMENT_INPUTS.md`、`materials/NOTEBOOKLM_INPUT.md`、`materials/FLOOD_NOTEBOOKLM_GUIDE.md`、`requirements.txt`、`TODO.md`、`PROJECT_LOG.md`。
+- 尚未解決的問題或限制：
+  - Kaggle Playground S4E5 之 `train.csv`（1,117,957 筆，約 130MB）因競賽授權需由使用者提供；取得後方可正式替換 `data/raw/` 原始資料並重建所有統計圖表與報告。
+  - 更換資料集後之真實 GPT 對話 PDF 與真實 NotebookLM 匯出 PDF 尚待使用者提供。
