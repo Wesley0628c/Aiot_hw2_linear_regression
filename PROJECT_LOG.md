@@ -171,6 +171,42 @@
   - `/tmp/clean_hw2_test` 隔離抹除重跑測試（成功，指標完全一致）
 - 測試是否成功：成功。
 - 產生或修改檔案：`data/raw/train.csv`、`data/README.md`、`data/PREPARATION.md`、`7115056106_hw2.py`、`outputs/`、`report/7115056106_hw2_report.md`、`report/generate_report.py`、`report/7115056106_hw2_report.pdf`、`report/7115056106_hw2_report_with_appendix.pdf`、`README.md`、`SUBMISSION_README.md`、`submission/`、`TODO.md`、`PROJECT_LOG.md`。
+
+## 2026-10-15（統計數值精確校正、Notebook 修復、過度推論更正、NotebookLM 整理版標註與打包同步）
+
+- 實際進行的修改：
+  1. **統計數值與模型參數全面校正**：
+     - 以原始資料集與 outputs 實際結果為基準，校正主報告與文檔中之所有統計數字。
+     - 截距項更正為實際之 `-0.052739`（約 `-0.0527`），移除舊版誤植之 `0.0988`；未標準化斜率介於 `0.00555` 至 `0.00574` 之間。
+     - 目標變數 `FloodProbability` 偏態係數校正為 `0.0650`，Pearson 峰度校正為 `2.990`（超額峰度 `-0.010`）。
+     - 20 項特徵偏態係數範圍校正為 `0.4072` 至 `0.4751`（平均 `0.4438`），Pearson 峰度範圍為 `3.124` 至 `3.405`（超額峰度 `0.124` 至 `0.406`）。
+     - 特徵間 Pearson 相關係數校正為 `-0.0232` 至 `+0.0042`（絕對值均小於 0.025，呈現近乎正交）；特徵與目標相關係數校正為 `0.1735` 至 `0.1942`（平均 `0.1842`）。
+  2. **Jupyter Notebook 修復與主程式抗衝突改造**：
+     - 修復 `7115056106_hw2.ipynb`：去除誤入之系統帳號文字（`uid=501(esleyw)...`），改回標準 `id` 欄位；補齊空白之預測目標欄位（`FloodProbability`）。
+     - 改造模組載入機制：以 `importlib.util` 載入模組，消除 `exec(open(...).read())` 導致之 `main()` 重複執行問題。
+     - 改造主程式 `7115056106_hw2.py` 之 `main(argv)`：改採 `parser.parse_known_args(argv)`，徹底防範 Jupyter 核心參數（`-f ...`）引發之 CLI 參數衝突。
+  3. **過度推論與理論邊界修正**：
+     - 修正 Lasso 均等重要性推論：澄清此為合成數據對稱生成訊號（各因子具備約 0.0056 斜率）之統計反映，非證明真實世界所有水文致災因子皆具備同等物理重要性。
+     - 修正 Durbin-Watson 獨立性推論：澄清 DW（2.0047）僅檢定資料列既定排序下的一階序列相關，非證明橫斷面抽樣或合成數據之完全統計獨立。
+     - 修正高斯-馬可夫定理常態性過度推論：清楚區分 Gauss-Markov 定理（確立 BLUE 僅需同質變異與無自相關，不需常態性）與 CNLRM 預測區間常態性假設，並指出未通過 JB 與 BP 檢定下預測區間為大樣本線性近似。
+     - 修正合成資料工程效益推論：明確標示合成數據回歸係數不可直接外推為實體水利工程之因果效益或政策依據。
+  4. **NotebookLM 文檔如實標示整理版與文獻補充**：
+     - 將重新排版之 2 頁 PDF 如實標示為「文獻排版整理版」（`materials/7115056106_NotebookLM_export.pdf`，SHA-256：`b8d0fd3a09d1c9f98001d77d0efb04b4e47304849bc4db655d2d28d77f735acc`），載明係為解決瀏覽器 UI 截斷問題而依真實對話重構之完整版本。
+     - 保留原始瀏覽器列印檔於 `materials/7115056106_NotebookLM_raw_export.pdf`（1 頁，SHA-256：`f01a7c584e9229b52ee9453e14f4370f6c61e8c86f5ed64c45d956a9029680da`）。
+     - 補上真實 Kaggle S4E5 第 1 名優勝者（aldparis 方案：Ridge + GBDT 集成與特徵總和分析）與水文回歸經典文獻（Hosking & Wallis 1997, Mosavi et al. 2018 等），嚴禁虛構引用。
+  5. **GPT 對話完整性維持待完成狀態**：
+     - 在各文件（TODO、README、ASSIGNMENT_INPUTS）中明確聲明：目前已封存階段性 15 頁對話 PDF，後續對話紀錄待補齊後始標記完成。
+  6. **打包、頁數與雜湊全面同步**：
+     - 編譯產出 14 頁獨立主報告 `report/7115056106_hw2_report.pdf` 與 31 頁合併 PDF `report/7115056106_hw2_report_with_appendix.pdf`。
+     - 全面同步 `submission/7115056106_hw2/` 目錄與重新打包 `submission/7115056106_hw2.zip`。
+- 測試指令或方法：
+  - `python3 7115056106_hw2.py`（執行無誤，數值重現）
+  - `python3 report/generate_notebooklm_pdf.py`（產出 2 頁整理版 PDF）
+  - `python3 report/generate_report.py`（產出 14 頁主報告與 31 頁合併 PDF）
+  - `python3 -c "import pypdf; ..."`（驗證頁數符合）
+  - `unzip -t submission/7115056106_hw2.zip`（檢驗壓縮包完整無損）
+- 測試是否成功：成功。
+
 ## 2026-10-15（整合真實 NotebookLM 洪水研究摘要、替換完整洪水 GPT 對話 PDF、全面清理舊版紅酒檔案與最終驗收）
 
 - 實際進行的修改：

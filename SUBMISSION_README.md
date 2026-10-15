@@ -3,10 +3,12 @@
 ## 必要檔案清單
 
 - `7115056106_hw2.py`：主分析程式（涵蓋 CRISP-DM 探索、切分、Lasso 交叉驗證、模型擬合、預測區間與殘差檢定）。
-- `7115056106_hw2_report.pdf`：CRISP-DM 正式主報告（13 頁）。
-- `7115056106_hw2_report_with_appendix.pdf`：主報告結合 GPT 對話附錄之合併 PDF（28 頁）。
-- `7115056106_GPT_conversation.pdf`：使用者匯出的真實 GPT 對話紀錄（15 頁，包含洪水題目光譜、CRISP-DM 推導與驗收提示詞）。
-- `7115056106_NotebookLM_export.pdf`：NotebookLM 研究紀錄（2 頁，完整未截斷版本，10 個水文與變數選擇來源）。
+- `7115056106_hw2.ipynb`：Jupyter Notebook 執行檔（已修復參數衝突、重複執行與欄位標記）。
+- `7115056106_hw2_report.pdf`：CRISP-DM 正式主報告（14 頁）。
+- `7115056106_hw2_report_with_appendix.pdf`：主報告結合 GPT 對話附錄與文獻整理之合併 PDF（31 頁）。
+- `7115056106_GPT_conversation.pdf`：階段性真實 GPT 對話紀錄（15 頁，後續程式修復對話待補齊，完整性維持待完成）。
+- `7115056106_NotebookLM_raw_export.pdf`：NotebookLM 原始瀏覽器列印存檔（1 頁原始紀錄）。
+- `7115056106_NotebookLM_export.pdf`：NotebookLM 文獻排版整理版（2 頁完整版，涵蓋 10 個水文與變數選擇來源、Kaggle 優勝方案）。
 - `NotebookLM_research_summary.md`：真實 NotebookLM 洪水研究摘要與主流解法比較（超過 100 字）。
 - `data/raw/train.csv`：Kaggle Playground S4E5 洪水預測原始抽樣資料（50,000 筆，20 個原始特徵）。
 - `requirements.txt`：Python 執行環境套件相依清單。
@@ -38,6 +40,7 @@ python3 report/generate_report.py
 - **資料切分**：80% 訓練集（40,000 筆）、20% 測試集（10,000 筆），固定亂數種子 `random_state=42`。
 - **防洩漏設定**：Lasso 特徵選擇之 `StandardScaler` 位於 Pipeline 中，僅在 5-fold CV 訓練子集內 fit。
 - **預測區間**：針對個別未來觀測建立之 95% Individual Prediction Interval（測試集涵蓋率 94.28%）。
+- **截距項與斜率**：基準模型與特徵選擇模型截距項約為 -0.0527，未標準化特徵斜率集中於 0.00555 至 0.00574 之間。
 
 ## 附件來源聲明
 

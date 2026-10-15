@@ -605,12 +605,12 @@ def evaluate_models(
     print(json.dumps({"evaluation": metrics, "diagnostics": diagnostics}, ensure_ascii=False, indent=2))
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="AIoT HW2 Flood Prediction Multiple Linear Regression")
     parser.add_argument("--data-path", type=Path, default=Path("data/raw/train.csv"))
     parser.add_argument("--output-dir", type=Path, default=Path("outputs"))
     parser.add_argument("--processed-dir", type=Path, default=Path("data/processed"))
-    args = parser.parse_args()
+    args, _ = parser.parse_known_args(argv)
 
     data = load_data(args.data_path)
     save_data_understanding(data, args.output_dir)
@@ -622,3 +622,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
