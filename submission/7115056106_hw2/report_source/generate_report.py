@@ -210,22 +210,30 @@ def build_story(markdown: str) -> list:
 
 
 def merge_with_appendix(report_path: Path, output_path: Path) -> bool:
-    """若存在 GPT 對話紀錄 PDF，則生成包含主報告與附錄的合併 PDF。"""
-    appendix_candidates = [
+    """生成包含主報告、GPT 對話附錄與 NotebookLM 研究紀錄的完整合併 PDF。"""
+    gpt_candidates = [
         REPORT_DIR.parent / "submission" / "7115056106_hw2" / "7115056106_GPT_conversation.pdf",
         REPORT_DIR.parent / "materials" / "7115056106_GPT_conversation.pdf",
     ]
-    appendix_path = None
-    for cand in appendix_candidates:
+    nlm_candidates = [
+        REPORT_DIR.parent / "submission" / "7115056106_hw2" / "7115056106_NotebookLM_export.pdf",
+        REPORT_DIR.parent / "materials" / "7115056106_NotebookLM_export.pdf",
+    ]
+    files_to_merge = [report_path]
+    for cand in gpt_candidates:
         if cand.is_file():
-            appendix_path = cand
+            files_to_merge.append(cand)
             break
-    if not appendix_path:
+    for cand in nlm_candidates:
+        if cand.is_file():
+            files_to_merge.append(cand)
+            break
+    if len(files_to_merge) == 1:
         return False
     try:
         import pypdf
         writer = pypdf.PdfWriter()
-        for pdf_file in [report_path, appendix_path]:
+        for pdf_file in files_to_merge:
             reader = pypdf.PdfReader(str(pdf_file))
             for page in reader.pages:
                 writer.add_page(page)
