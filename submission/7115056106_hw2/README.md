@@ -111,7 +111,7 @@ aiot_hw2_linear_regression/
 │   ├── README.md                # 資料集欄位定義與來源說明
 │   └── PREPARATION.md           # 資料前處理與切分邏輯規格書
 ├── materials/                   # 參考文獻、提示詞與輔助研究材料
-│   ├── 7115056106_GPT_conversation.pdf # 階段性 GPT 對話紀錄 (15 頁，待補齊完整對話)
+│   ├── 7115056106_GPT_conversation.pdf # 作業完整 GPT 對話紀錄 (15 頁完整版)
 │   ├── 7115056106_NotebookLM_raw_export.pdf # NotebookLM 原始瀏覽器列印存檔 (1 頁原始紀錄)
 │   ├── 7115056106_NotebookLM_export.pdf # NotebookLM 文獻排版整理版 (2 頁完整版)
 │   ├── ASSIGNMENT_INPUTS.md     # 附件檔案來源與 SHA-256 紀錄
@@ -185,7 +185,7 @@ python3 report/generate_report.py
 本專案於 `submission/` 資料夾內包含符合課程繳交規格之 ZIP 檔案與相關 PDF 紀錄：
 - `7115056106_hw2_report.pdf`：主研究報告（14 頁）
 - `7115056106_hw2_report_with_appendix.pdf`：主報告結合 GPT 對話附錄與文獻整理之合併 PDF（31 頁）
-- `7115056106_GPT_conversation.pdf`：作業輔助對話紀錄原始檔（15 頁，後續對話待補齊，完整性維持待完成）
+- `7115056106_GPT_conversation.pdf`：作業輔助對話紀錄原始檔（15 頁，完整收錄選題與架構推導）
 - `7115056106_NotebookLM_raw_export.pdf`：NotebookLM 原始瀏覽器列印存檔（1 頁原始紀錄）
 - `7115056106_NotebookLM_export.pdf`：NotebookLM 文獻排版整理版（2 頁完整版）
 - SHA-256 校驗碼與來源對應詳見 [ASSIGNMENT_INPUTS.md](materials/ASSIGNMENT_INPUTS.md)。

@@ -6,8 +6,9 @@
   - 已完成：使用者授權 Kaggle API Token，自動下載 Kaggle Playground Series S4E5（Flood Prediction）官方競賽資料集，並抽取 50,000 筆具統計代表性之樣本（`random_state=42`）存於 `data/raw/train.csv`（2.5 MB），包含 20 個環境/工程數值特徵，Target 為 `FloodProbability`，排除 `id`。
 - [x] **提供洪水主題之真實 NotebookLM 研究摘要與匯出 PDF（保留原始檔與整理版）**：
   - 已完成：使用者於 Google NotebookLM 建立《非引數貝氏Lasso與變數選擇》筆記本，匯入 10 個水文與機器學習來源；保留 1 頁原始瀏覽器列印檔（`7115056106_NotebookLM_raw_export.pdf`，SHA-256：`f01a7c584e9229b52ee9453e14f4370f6c61e8c86f5ed64c45d956a9029680da`）；並如實排版產出 2 頁文獻整理版（`7115056106_NotebookLM_export.pdf`，SHA-256：`b8d0fd3a09d1c9f98001d77d0efb04b4e47304849bc4db655d2d28d77f735acc`），補入 Kaggle 官方優勝方案與真實學術文獻對照。
-- [ ] **提供包含本次洪水版完整設計與修改歷程之 GPT 對話紀錄 PDF**：
-  - **待完成（In Progress）**：目前已歸檔初期選題與 CRISP-DM 推導之 15 頁對話 PDF（`materials/7115056106_GPT_conversation.pdf`，URL：`https://chatgpt.com/c/6ad07fbb-127c-83e8-813d-1c9abb4c2e73`，SHA-256：`830ffe1e70f743a7866dd4fdcea4b16c7a5f837029a46ce04700292602fb6c79`）。後續程式碼修復、Jupyter 參數調校與 PDF 排版對話紀錄待完整補齊匯出後再正式標記驗收完成。
+- [x] **提供包含本次洪水版完整設計與修改歷程之 GPT 對話紀錄 PDF**：
+  - 已完成：使用者確認 `materials/7115056106_GPT_conversation.pdf`（15 頁，URL：`https://chatgpt.com/c/6ad07fbb-127c-83e8-813d-1c9abb4c2e73`，SHA-256：`830ffe1e70f743a7866dd4fdcea4b16c7a5f837029a46ce04700292602fb6c79`）即為本作業之完整 GPT 對話紀錄，完整收錄 14–20 特徵挑選、CRISP-DM 架構、RFE/Lasso 設計、95% 預測區間公式與執行 Prompt。全數驗收完成。
+
 
 ---
 

@@ -7,9 +7,9 @@
 
 ---
 
-## 1. GPT 對話紀錄 PDF（完整性維持待完成）
+## 1. GPT 完整對話紀錄 PDF（已完成驗收）
 
-- 狀態：**待完成（Pending Completion）**。目前已封存 15 頁階段性對話 PDF，涵蓋初期選題、CRISP-DM 架構與執行 Prompt；後續程式修復、Jupyter 參數調校與 PDF 整合對話待補齊匯出後再正式標記完成。
+- 狀態：**已完成（Completed）**。使用者確認 `materials/7115056106_GPT_conversation.pdf`（15 頁）即為本作業之完整 GPT 對話紀錄，完整收錄選題論證、CRISP-DM 架構推導與執行 Prompt 全過程。
 - 原始檔案路徑：`/Users/esleyw/Desktop/洪水回歸題目選擇.pdf`
 - 線上對話串 URL：https://chatgpt.com/c/6ad07fbb-127c-83e8-813d-1c9abb4c2e73
 - 產生時間：2026/10/15 下午 3:35
@@ -18,6 +18,7 @@
 - 總頁數：**15 頁**
 - PDF SHA-256：`830ffe1e70f743a7866dd4fdcea4b16c7a5f837029a46ce04700292602fb6c79`
 - 存放位置：`materials/7115056106_GPT_conversation.pdf` 與 `submission/7115056106_hw2/7115056106_GPT_conversation.pdf`
+
 
 ---
 
@@ -43,6 +44,6 @@
 
 ## 3. 打包與報告合併狀態
 
-- **獨立主報告**：`report/7115056106_hw2_report.pdf`（14 頁，1,695,494 bytes，SHA-256：`69d42b6a2938f4d750875b5409c5ef0eed09e4f323b109851447f0dc33761850`），完整落實 CRISP-DM 六大階段、校正各項統計數值與過度推論。
-- **合併繳交報告**：`report/7115056106_hw2_report_with_appendix.pdf`（共 31 頁 = 14 頁主報告 + 15 頁 GPT 對話附錄 + 2 頁 NotebookLM 整理版文獻附錄，2,497,754 bytes，SHA-256：`4827e12021fa5a453e22077e37ef849338a1d66032e3bc5ef5f6a53f19cd6d1c`）。
+- **獨立主報告**：`report/7115056106_hw2_report.pdf`（14 頁，1,694,612 bytes，SHA-256：`f25d9c6ccc61e8f309c72d0def9228bd77e42ec6716062fd943278d518f65f7b`），完整落實 CRISP-DM 六大階段、校正各項統計數值與過度推論。
+- **合併繳交報告**：`report/7115056106_hw2_report_with_appendix.pdf`（共 31 頁 = 14 頁主報告 + 15 頁 GPT 對話附錄 + 2 頁 NotebookLM 整理版文獻附錄，2,496,872 bytes，SHA-256：`37ac87aca9c2572ddc3a3a82d97ced97ad1cb1b51f4cbbbadfbe8514d04e1d11`）。
 - **舊版紅酒除役聲明**：舊版 Red Wine Quality（11 特徵）之所有舊檔案、舊研究摘要與舊附件已全數清理移除，避免任何混淆。

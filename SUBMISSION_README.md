@@ -6,7 +6,7 @@
 - `7115056106_hw2.ipynb`：Jupyter Notebook 執行檔（已修復參數衝突、重複執行與欄位標記）。
 - `7115056106_hw2_report.pdf`：CRISP-DM 正式主報告（14 頁）。
 - `7115056106_hw2_report_with_appendix.pdf`：主報告結合 GPT 對話附錄與文獻整理之合併 PDF（31 頁）。
-- `7115056106_GPT_conversation.pdf`：階段性真實 GPT 對話紀錄（15 頁，後續程式修復對話待補齊，完整性維持待完成）。
+- `7115056106_GPT_conversation.pdf`：作業完整真實 GPT 對話紀錄（15 頁，完整收錄選題論證、CRISP-DM 架構推導與執行 Prompt）。
 - `7115056106_NotebookLM_raw_export.pdf`：NotebookLM 原始瀏覽器列印存檔（1 頁原始紀錄）。
 - `7115056106_NotebookLM_export.pdf`：NotebookLM 文獻排版整理版（2 頁完整版，涵蓋 10 個水文與變數選擇來源、Kaggle 優勝方案）。
 - `NotebookLM_research_summary.md`：真實 NotebookLM 洪水研究摘要與主流解法比較（超過 100 字）。
