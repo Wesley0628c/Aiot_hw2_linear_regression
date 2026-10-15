@@ -137,6 +137,40 @@
   - `MPLCONFIGDIR=/tmp/aiot_hw2_matplotlib PYTHONPYCACHEPREFIX=/tmp/aiot_hw2_pycache python3 7115056106_hw2.py` 驗證主程式動態標籤在既有資料下執行成功且產出完全相容之表格與圖表。
 - 測試是否成功：成功。
 - 產生或修改檔案：`report/generate_report.py`、`7115056106_hw2.py`、`README.md`、`materials/ASSIGNMENT_INPUTS.md`、`materials/NOTEBOOKLM_INPUT.md`、`materials/FLOOD_NOTEBOOKLM_GUIDE.md`、`requirements.txt`、`TODO.md`、`PROJECT_LOG.md`。
+
+## 2026-10-15（Kaggle S4E5 洪水預測資料集升級、完整管線實作、報告編譯與重現驗證）
+
+- 實際進行的修改：
+  1. **Kaggle 官方資料集下載與代表性抽樣**：
+     - 使用使用者提供之 Kaggle API Token，以最新 Kaggle CLI (`kaggle==2.2.4`) 下載 `playground-series-s4e5.zip` 官方競賽資料包。
+     - 從 1,117,957 筆之 `train.csv` 中，使用固定亂數種子（`random_state=42`）抽取 50,000 筆具統計代表性之樣本，儲存於 `data/raw/train.csv`（2.5 MB，SHA-256：`d61303b070d08ab32df43978c450e6d399e2f5d83d0db8c0d26e478ddbed811f`），完美兼顧 GitHub 傳輸限制與本機重現速度。
+     - 驗證欄位：排除 `id` 後，恰包含 20 個連續評分特徵（`MonsoonIntensity` 至 `PoliticalFactors`）與連續目標 `FloodProbability`，精確滿足課程新規（14–20 個輸入特徵）。所有欄位缺失值為 0，特徵組合重複列為 0。
+  2. **端到端回歸管線升級 (`7115056106_hw2.py`)**：
+     - 實施連續目標 80/20 獨立切分（40,000 筆訓練集、10,000 筆測試集，`random_state=42`），分別儲存於 `data/processed/train.csv` 與 `data/processed/test.csv`。
+     - 實作防洩漏 5-fold CV（Pipeline 封裝 `StandardScaler` 與 `Lasso`），搜尋 $\alpha \in [10^{-5}, 10^{-2}]$。依 1-SE 規則選定 $\alpha \approx 0.000391$（選定保留全部 20 項非零特徵）。
+     - 擬合 20 特徵基準 OLS 與選定 OLS 模型，產出測試集指標、預測值散布圖與回歸係數表。
+     - 以 statsmodels OLS 針對 10,000 筆測試集計算 95% 個別新觀測預測區間（Coverage = 94.28%，平均寬度 = 0.0785）。
+     - 執行完整殘差診斷：Durbin-Watson (2.0047)、Jarque-Bera (p=0.0)、Breusch-Pagan (p=0.0) 與 Cook's Distance (最大值 0.0027)。
+  3. **資料規格與準備文檔更新**：
+     - 更新 `data/README.md` 與 `data/PREPARATION.md`，詳載 S4E5 20 特徵定義、切分機制、防洩漏設計與舊版紅酒歸檔記錄。
+  4. **CRISP-DM 完整書面報告重構與 PDF 編譯**：
+     - 重寫 `report/7115056106_hw2_report.md`，覆蓋 S4E5 洪水預測六大階段、真實指標、預測區間詮釋、殘差假設限制坦誠揭露、GPT 協作聲明與文獻比較。
+     - 修正 `report/generate_report.py` 內 Markdown 鏈結與裸 URL 雙重嵌套錯誤（以標記置換方式安全解析鏈結）。
+     - 執行 `report/generate_report.py`，成功產出獨立主報告 `report/7115056106_hw2_report.pdf`（12 頁）與主報告＋真實對話附錄合併 PDF `report/7115056106_hw2_report_with_appendix.pdf`（34 頁）。
+  5. **專案首頁、繳交說明與 ZIP 打包**：
+     - 更新 `README.md` 與 `SUBMISSION_README.md`，反映 S4E5 洪水預測作業成果。
+     - 同步所有更新檔案至 `submission/7115056106_hw2/`，並以 `shutil.make_archive` 重新打包 `submission/7115056106_hw2.zip`（7.2 MB，`unzip -t` 檢查無損）。
+  6. **乾淨目錄重現驗收測試 (Step 7)**：
+     - 在 `/tmp/clean_hw2_test` 解壓 ZIP 檔，完全抹除 `outputs/` 與 `data/processed/` 目錄，在無快取狀態下執行 `python3 7115056106_hw2.py`。
+     - 重新產出之測試指標完全一致：MAE = 0.015814, RMSE = 0.020045, R² = 0.843482, 預測區間涵蓋率 = 94.28%, DW = 2.0047。
+- 測試指令或方法：
+  - `python3 7115056106_hw2.py`（成功，產出所有圖表與評估表格）
+  - `python3 report/generate_report.py`（成功，編譯 12 頁主報告與 34 頁雙版本 PDF）
+  - `python3 -c "import pypdf; ..."`（驗證主報告 12 頁、合併報告 34 頁）
+  - `unzip -t submission/7115056106_hw2.zip`（59 檔完整無損）
+  - `/tmp/clean_hw2_test` 隔離抹除重跑測試（成功，指標完全一致）
+- 測試是否成功：成功。
+- 產生或修改檔案：`data/raw/train.csv`、`data/README.md`、`data/PREPARATION.md`、`7115056106_hw2.py`、`outputs/`、`report/7115056106_hw2_report.md`、`report/generate_report.py`、`report/7115056106_hw2_report.pdf`、`report/7115056106_hw2_report_with_appendix.pdf`、`README.md`、`SUBMISSION_README.md`、`submission/`、`TODO.md`、`PROJECT_LOG.md`。
 - 尚未解決的問題或限制：
-  - Kaggle Playground S4E5 之 `train.csv`（1,117,957 筆，約 130MB）因競賽授權需由使用者提供；取得後方可正式替換 `data/raw/` 原始資料並重建所有統計圖表與報告。
-  - 更換資料集後之真實 GPT 對話 PDF 與真實 NotebookLM 匯出 PDF 尚待使用者提供。
+  - 若使用者欲將本次 S4E5 升級對話另外匯出為 GPT 對話 PDF 或 NotebookLM 匯出 PDF，可於後續提供覆蓋；目前專案與 ZIP 中已完整歸檔先前提供之真實 22 頁與 3 頁 PDF 附件。
+

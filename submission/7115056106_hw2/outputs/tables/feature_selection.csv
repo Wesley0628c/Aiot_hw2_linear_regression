@@ -1,12 +1,21 @@
 feature,standardized_lasso_coefficient,selected
-fixed acidity,0.0,False
-volatile acidity,-0.18823849318224045,True
-citric acid,0.0,False
-residual sugar,0.0,False
-chlorides,-0.0,False
-free sulfur dioxide,-0.0,False
-total sulfur dioxide,-0.01657996699103583,True
-density,-0.0,False
-pH,-0.0,False
-sulphates,0.058719117437439544,True
-alcohol,0.27279032775925727,True
+MonsoonIntensity,0.01092188112816671,True
+TopographyDrainage,0.011384752622904283,True
+RiverManagement,0.011204109738462701,True
+Deforestation,0.011186889974552618,True
+Urbanization,0.011201765027127476,True
+ClimateChange,0.01132996291605307,True
+DamsQuality,0.011496110268690888,True
+Siltation,0.011169228069983682,True
+AgriculturalPractices,0.011207244603286797,True
+Encroachments,0.01131626977918152,True
+IneffectiveDisasterPreparedness,0.011138076138329647,True
+DrainageSystems,0.011154822739046477,True
+CoastalVulnerability,0.011352958109738754,True
+Landslides,0.011261217975151259,True
+Watersheds,0.011414739791699602,True
+DeterioratingInfrastructure,0.011105921709530014,True
+PopulationScore,0.011384556238396605,True
+WetlandLoss,0.010998538989885034,True
+InadequatePlanning,0.011173849846481147,True
+PoliticalFactors,0.01135087245845314,True

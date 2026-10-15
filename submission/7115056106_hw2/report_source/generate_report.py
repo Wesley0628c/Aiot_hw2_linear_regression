@@ -75,8 +75,18 @@ def inline_markup(text: str) -> str:
     value = html.escape(text.strip())
     value = re.sub(r"`([^`]+)`", r"<font name='Courier'>\1</font>", value)
     value = re.sub(r"\*\*([^*]+)\*\*", r"<b>\1</b>", value)
-    value = re.sub(r"\[([^]]+)\]\((https?://[^)]+)\)", r"<a href='\2' color='#005F73'>\1</a>", value)
+    saved_links = []
+
+    def replace_markdown_link(match):
+        label = match.group(1)
+        url = match.group(2)
+        saved_links.append(f"<a href='{url}' color='#005F73'>{label}</a>")
+        return f"__SAVED_LINK_{len(saved_links) - 1}__"
+
+    value = re.sub(r"\[([^]]+)\]\((https?://[^)]+)\)", replace_markdown_link, value)
     value = re.sub(r"(https?://[^\s<]+)", r"<a href='\1' color='#005F73'>\1</a>", value)
+    for idx, link_html in enumerate(saved_links):
+        value = value.replace(f"__SAVED_LINK_{idx}__", link_html)
     return value
 
 
