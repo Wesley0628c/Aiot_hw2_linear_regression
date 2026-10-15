@@ -177,5 +177,5 @@ python3 report/generate_report.py
 - `7115056106_hw2_report.pdf`：主研究報告（13 頁）
 - `7115056106_hw2_report_with_appendix.pdf`：主報告結合 GPT 對話附錄之合併 PDF（28 頁）
 - `7115056106_GPT_conversation.pdf`：作業輔助對話紀錄原始檔（15 頁）
-- `7115056106_NotebookLM_export.pdf`：NotebookLM 研究紀錄原始檔（1 頁）
+- `7115056106_NotebookLM_export.pdf`：NotebookLM 研究紀錄原始檔（2 頁，完整未截斷版本）
 - SHA-256 校驗碼與來源對應詳見 [ASSIGNMENT_INPUTS.md](materials/ASSIGNMENT_INPUTS.md)。

@@ -27,9 +27,9 @@
 - 產生時間：2026/10/15 下午 3:32
 - 筆記本主題：非引數貝氏Lasso與變數選擇（涵蓋 10 個水文回歸與變數選擇學術來源）
 - 摘要保存位置：`materials/NOTEBOOKLM_FLOOD_RESEARCH.md` 與 `submission/7115056106_hw2/NotebookLM_research_summary.md`
-- PDF 檔案大小：205,055 bytes
-- 總頁數：**1 頁**
-- PDF SHA-256：`f01a7c584e9229b52ee9453e14f4370f6c61e8c86f5ed64c45d956a9029680da`
+- PDF 檔案大小：236,966 bytes
+- 總頁數：**2 頁**（完整排版未截斷版本，涵蓋三大模型優缺點、20 特徵 Lasso 限制與殘差診斷）
+- PDF SHA-256：`08159842fea5317c85942902be79c0a7121c6d70120716884e5c3ec46cec42f5`
 - 存放位置：`materials/7115056106_NotebookLM_export.pdf` 與 `submission/7115056106_hw2/7115056106_NotebookLM_export.pdf`
 
 ---
