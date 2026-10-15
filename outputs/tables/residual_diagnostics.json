@@ -1,0 +1,19 @@
+{
+  "evaluated_model": "Selected OLS (4 features)",
+  "interval_type": "95% prediction interval for an individual future observation",
+  "prediction_interval_alpha": 0.05,
+  "prediction_interval_test_coverage": 0.9463722397476341,
+  "prediction_interval_mean_width": 2.566784120895708,
+  "jarque_bera_statistic": 36.63514655677261,
+  "jarque_bera_pvalue": 1.1086105401338844e-08,
+  "residual_skewness": -0.17167796260996143,
+  "residual_kurtosis": 3.753620651026918,
+  "breusch_pagan_lm_statistic": 28.88363004159244,
+  "breusch_pagan_lm_pvalue": 8.254633078722137e-06,
+  "breusch_pagan_f_statistic": 7.358533582227821,
+  "breusch_pagan_f_pvalue": 7.38105267677541e-06,
+  "durbin_watson_statistic": 1.6886511683052368,
+  "max_cooks_distance": 0.12484151959506562,
+  "observations_above_cooks_4_over_n": 78,
+  "train_observation_count": 1282
+}

@@ -1,0 +1,40 @@
+{
+  "row_count": 1599,
+  "column_count": 12,
+  "feature_count": 11,
+  "target": "quality",
+  "column_names": [
+    "fixed acidity",
+    "volatile acidity",
+    "citric acid",
+    "residual sugar",
+    "chlorides",
+    "free sulfur dioxide",
+    "total sulfur dioxide",
+    "density",
+    "pH",
+    "sulphates",
+    "alcohol",
+    "quality"
+  ],
+  "dtypes": {
+    "fixed acidity": "float64",
+    "volatile acidity": "float64",
+    "citric acid": "float64",
+    "residual sugar": "float64",
+    "chlorides": "float64",
+    "free sulfur dioxide": "float64",
+    "total sulfur dioxide": "float64",
+    "density": "float64",
+    "pH": "float64",
+    "sulphates": "float64",
+    "alcohol": "float64",
+    "quality": "int64"
+  },
+  "missing_value_count": 0,
+  "duplicate_row_count": 240,
+  "target_min": 3,
+  "target_max": 8,
+  "target_mean": 5.6360225140712945,
+  "target_median": 6.0
+}

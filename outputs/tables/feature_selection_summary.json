@@ -1,0 +1,35 @@
+{
+  "method": "StandardScaler + Lasso with stratified group 5-fold CV",
+  "selection_rule": "largest alpha within one standard error of minimum CV RMSE",
+  "random_state": 42,
+  "alpha_candidates": 81,
+  "minimum_cv_rmse": 0.6503004746531973,
+  "one_se_threshold": 0.663907944397532,
+  "selected_alpha": 0.06309573444801936,
+  "features_before": [
+    "fixed acidity",
+    "volatile acidity",
+    "citric acid",
+    "residual sugar",
+    "chlorides",
+    "free sulfur dioxide",
+    "total sulfur dioxide",
+    "density",
+    "pH",
+    "sulphates",
+    "alcohol"
+  ],
+  "feature_count_before": 11,
+  "features_after": [
+    "volatile acidity",
+    "total sulfur dioxide",
+    "sulphates",
+    "alcohol"
+  ],
+  "feature_count_after": 4,
+  "refit_model": "sklearn.linear_model.LinearRegression",
+  "train_rows": 1282,
+  "test_prediction_count": 317,
+  "test_prediction_min": 4.6745968285258925,
+  "test_prediction_max": 7.23067975210457
+}

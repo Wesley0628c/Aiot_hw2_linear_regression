@@ -1,0 +1,25 @@
+{
+  "model": "sklearn.linear_model.LinearRegression",
+  "fit_intercept": true,
+  "features": [
+    "fixed acidity",
+    "volatile acidity",
+    "citric acid",
+    "residual sugar",
+    "chlorides",
+    "free sulfur dioxide",
+    "total sulfur dioxide",
+    "density",
+    "pH",
+    "sulphates",
+    "alcohol"
+  ],
+  "feature_count": 11,
+  "train_rows": 1282,
+  "test_rows": 317,
+  "intercept": 25.972885304738902,
+  "prediction_count": 317,
+  "prediction_min": 4.647603544533041,
+  "prediction_max": 7.5058784582737275,
+  "prediction_mean": 5.632105742007734
+}

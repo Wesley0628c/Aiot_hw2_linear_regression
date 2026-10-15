@@ -1,0 +1,12 @@
+feature,standardized_lasso_coefficient,selected
+fixed acidity,0.0,False
+volatile acidity,-0.18823849318224045,True
+citric acid,0.0,False
+residual sugar,0.0,False
+chlorides,-0.0,False
+free sulfur dioxide,-0.0,False
+total sulfur dioxide,-0.01657996699103583,True
+density,-0.0,False
+pH,-0.0,False
+sulphates,0.058719117437439544,True
+alcohol,0.27279032775925727,True
