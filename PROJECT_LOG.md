@@ -171,6 +171,34 @@
   - `/tmp/clean_hw2_test` 隔離抹除重跑測試（成功，指標完全一致）
 - 測試是否成功：成功。
 - 產生或修改檔案：`data/raw/train.csv`、`data/README.md`、`data/PREPARATION.md`、`7115056106_hw2.py`、`outputs/`、`report/7115056106_hw2_report.md`、`report/generate_report.py`、`report/7115056106_hw2_report.pdf`、`report/7115056106_hw2_report_with_appendix.pdf`、`README.md`、`SUBMISSION_README.md`、`submission/`、`TODO.md`、`PROJECT_LOG.md`。
-- 尚未解決的問題或限制：
-  - 若使用者欲將本次 S4E5 升級對話另外匯出為 GPT 對話 PDF 或 NotebookLM 匯出 PDF，可於後續提供覆蓋；目前專案與 ZIP 中已完整歸檔先前提供之真實 22 頁與 3 頁 PDF 附件。
+## 2026-10-15（整合真實 NotebookLM 洪水研究摘要、替換完整洪水 GPT 對話 PDF、全面清理舊版紅酒檔案與最終驗收）
+
+- 實際進行的修改：
+  1. **真實 NotebookLM 洪水研究摘要整合**：
+     - 使用者於 Google NotebookLM 建立《非引數貝氏Lasso與變數選擇》筆記本，匯入 10 篇水文與機器學習來源（包含 Kaggle 洪水競賽說明、RFFA 未設站流域回歸、極端水文動態等）。
+     - 將產出之 1000+ 字完整研究摘要與比較（MLR vs GBDT 樹模型 vs 水文動力模型 SWAT/HEC-RAS、20 特徵下 Lasso 正則化稀疏性優勢與過度壓縮限制、殘差常態性與等變異性對 95% 預測區間可靠性之影響）正式納入 `report/7115056106_hw2_report.md` 之「# NotebookLM 摘要」章節與方法比較表中。
+     - 建立獨立研究文件 `materials/NOTEBOOKLM_FLOOD_RESEARCH.md` 與 `submission/7115056106_hw2/NotebookLM_research_summary.md`。
+     - 將使用者匯出之真實 1 頁 PDF（`非引數貝氏Lasso與變數選擇 - Gemini Notebook.pdf`，SHA-256：`f01a7c584e9229b52ee9453e14f4370f6c61e8c86f5ed64c45d956a9029680da`）歸檔至 `materials/7115056106_NotebookLM_export.pdf` 與 `submission/7115056106_hw2/7115056106_NotebookLM_export.pdf`。
+  2. **新版完整洪水 GPT 對話 PDF 替換與附錄整合**：
+     - 將使用者提供之包含從 Kaggle 14–20 特徵篩選、選定 Predict the Flood 資料集、CRISP-DM 六階段架構、20 特徵回歸方程、RFE/Lasso 設計到執行 Prompt 之 15 頁完整對話 PDF（`洪水回歸題目選擇.pdf`，SHA-256：`830ffe1e70f743a7866dd4fdcea4b16c7a5f837029a46ce04700292602fb6c79`）正式歸檔為 `7115056106_GPT_conversation.pdf`。
+     - 更新 `report/7115056106_hw2_report.md` 中之「# GPT 輔助內容與宣告」章節與參考資料。
+  3. **全面清理舊版紅酒檔案**：
+     - 徹底刪除專案根目錄與 submission 中的舊版紅酒檔案：`data/raw/winequality-red.csv`、`materials/NOTEBOOKLM_INPUT.md`、`materials/NOTEBOOKLM_RESEARCH.md`，避免任何主題或數據混淆。
+     - 更新 `materials/ASSIGNMENT_INPUTS.md`、`README.md` 與 `SUBMISSION_README.md`。
+  4. **重新編譯雙版本 PDF 報告**：
+     - 執行 `report/generate_report.py`，成功編譯獨立主報告 `report/7115056106_hw2_report.pdf`（**13 頁**）與合併真實 15 頁 GPT 對話附錄之 `report/7115056106_hw2_report_with_appendix.pdf`（**28 頁**）。
+  5. **同步交付目錄與重新打包 ZIP**：
+     - 全面同步 `submission/7115056106_hw2/` 目錄並使用 `shutil.make_archive` 重新打包 `submission/7115056106_hw2.zip`（8.06 MB，包含 59 個檔案，`unzip -t` 檢查無損）。
+  6. **乾淨目錄重現驗收測試 (Step 7)**：
+     - 在 `/tmp/clean_hw2_final_test` 解壓 ZIP 檔，徹底抹除 `outputs/` 與 `data/processed/` 目錄，在無快取狀態下執行 `python3 7115056106_hw2.py` 與 `python3 report_source/generate_report.py`。
+     - 重新產出之測試指標完全一致：MAE = 0.015814, RMSE = 0.020045, R² = 0.843482, 預測區間涵蓋率 = 94.28%, DW = 2.0047，報告生成 exit code 0，通過最終驗收。
+- 測試指令或方法：
+  - `python3 report/generate_report.py`（主報告 13 頁，合併報告 28 頁）
+  - `python3 -c "import pypdf; ..."` 驗證頁數
+  - `unzip -t submission/7115056106_hw2.zip`（59 檔完整無損）
+  - `/tmp/clean_hw2_final_test` 乾淨隔離目錄全流程重跑測試（完全一致，通過）
+- 測試是否成功：成功。
+- 產生或修改檔案：`materials/7115056106_GPT_conversation.pdf`、`materials/7115056106_NotebookLM_export.pdf`、`materials/NOTEBOOKLM_FLOOD_RESEARCH.md`、`materials/ASSIGNMENT_INPUTS.md`、`report/7115056106_hw2_report.md`、`report/7115056106_hw2_report.pdf`、`report/7115056106_hw2_report_with_appendix.pdf`、`README.md`、`SUBMISSION_README.md`、`submission/`、`TODO.md`、`PROJECT_LOG.md`。
+- 尚未解決的問題或限制：無，所有規格要求、程式執行、學術誠實附件、CRISP-DM 報告與乾淨重現驗收均已 100% 完成。
+
 

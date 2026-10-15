@@ -172,5 +172,6 @@
 - 測試是否成功：成功。
 - 產生或修改檔案：`data/raw/train.csv`、`data/README.md`、`data/PREPARATION.md`、`7115056106_hw2.py`、`outputs/`、`report/7115056106_hw2_report.md`、`report/generate_report.py`、`report/7115056106_hw2_report.pdf`、`report/7115056106_hw2_report_with_appendix.pdf`、`README.md`、`SUBMISSION_README.md`、`submission/`、`TODO.md`、`PROJECT_LOG.md`。
 - 尚未解決的問題或限制：
-  - 若使用者欲將本次 S4E5 升級對話另外匯出為 GPT 對話 PDF 或 NotebookLM 匯出 PDF，可於後續提供覆蓋；目前專案與 ZIP 中已完整歸檔先前提供之真實 22 頁與 3 頁 PDF 附件。
+  - **新主題 NotebookLM 實證研究與摘要**（作業核心必要項）：目前報告與附件仍包含舊版紅酒內容。依作業要求，須使用 NotebookLM 實際研究洪水預測/水文回歸主題，撰寫至少 100 字摘要並附上來源放入報告中，匯出真實 PDF 作為研究證據。Step 5B 保持未勾選狀態，待取得真實摘要後整合。
+  - **包含本次洪水版歷程之完整 GPT 對話 PDF**（作業核心必要項）：原作業要求匯出所有與 ChatGPT 對話，目前僅有舊版 22 頁紅酒對話，需補上本次 S4E5 設計、程式重構、診斷與檢查之完整對話 PDF。Step 6 最終打包驗收亦相應等待此兩項完成。
 

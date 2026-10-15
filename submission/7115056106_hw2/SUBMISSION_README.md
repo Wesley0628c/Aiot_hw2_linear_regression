@@ -3,11 +3,11 @@
 ## 必要檔案清單
 
 - `7115056106_hw2.py`：主分析程式（涵蓋 CRISP-DM 探索、切分、Lasso 交叉驗證、模型擬合、預測區間與殘差檢定）。
-- `7115056106_hw2_report.pdf`：CRISP-DM 正式主報告（12 頁）。
-- `7115056106_hw2_report_with_appendix.pdf`：主報告結合 GPT 對話附錄之合併 PDF（34 頁）。
-- `7115056106_GPT_conversation.pdf`：使用者匯出的真實 GPT 對話紀錄（22 頁）。
-- `7115056106_NotebookLM_export.pdf`：NotebookLM 研究紀錄（3 頁）。
-- `NotebookLM_research_summary.md`：研究摘要與解法比較。
+- `7115056106_hw2_report.pdf`：CRISP-DM 正式主報告（13 頁）。
+- `7115056106_hw2_report_with_appendix.pdf`：主報告結合 GPT 對話附錄之合併 PDF（28 頁）。
+- `7115056106_GPT_conversation.pdf`：使用者匯出的真實 GPT 對話紀錄（15 頁，包含洪水題目光譜、CRISP-DM 推導與驗收提示詞）。
+- `7115056106_NotebookLM_export.pdf`：NotebookLM 研究紀錄（1 頁，10 個水文與變數選擇來源）。
+- `NotebookLM_research_summary.md`：真實 NotebookLM 洪水研究摘要與主流解法比較（超過 100 字）。
 - `data/raw/train.csv`：Kaggle Playground S4E5 洪水預測原始抽樣資料（50,000 筆，20 個原始特徵）。
 - `requirements.txt`：Python 執行環境套件相依清單。
 

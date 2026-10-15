@@ -60,8 +60,7 @@ aiot_hw2_linear_regression/
 ├── TODO.md                      # 開發任務追蹤清單
 ├── data/
 │   ├── raw/
-│   │   ├── train.csv            # Kaggle S4E5 洪水預測代表性抽樣資料集 (50,000 筆)
-│   │   └── winequality-red.csv  # 舊版紅酒品質資料 (存檔備查，因 11 特徵不符新規已除役)
+│   │   └── train.csv            # Kaggle S4E5 洪水預測代表性抽樣資料集 (50,000 筆)
 │   ├── processed/
 │   │   ├── train.csv            # 劃分之獨立訓練集 (40,000 筆)
 │   │   └── test.csv             # 劃分之獨立測試集 (10,000 筆)
@@ -69,17 +68,16 @@ aiot_hw2_linear_regression/
 │   └── PREPARATION.md           # 資料前處理與切分邏輯規格書
 ├── materials/                   # 參考文獻、提示詞與輔助研究材料
 │   ├── ASSIGNMENT_INPUTS.md     # 附件檔案來源與 SHA-256 紀錄
-│   ├── FLOOD_NOTEBOOKLM_GUIDE.md# S4E5 洪水預測 NotebookLM 研究與提問指引
-│   ├── NOTEBOOKLM_INPUT.md      # 舊版 NotebookLM 輸入記錄
-│   └── NOTEBOOKLM_RESEARCH.md   # 舊版文獻研究對比記錄
+│   ├── NOTEBOOKLM_FLOOD_RESEARCH.md # NotebookLM 洪水預測深入研究摘要與解法比較
+│   └── FLOOD_NOTEBOOKLM_GUIDE.md# S4E5 洪水預測 NotebookLM 研究與提問指引
 ├── outputs/                     # 程式產出之成果物 (可完全由主程式重現)
 │   ├── figures/                 # 視覺化圖表 (熱力圖、殘差圖、預測區間圖等)
 │   ├── tables/                  # 評估指標、特徵係數、描述統計等 CSV / JSON
 │   └── models/                  # 序列化保存之模型 (Joblib)
 ├── report/                      # CRISP-DM 完整書面報告
 │   ├── 7115056106_hw2_report.md # 報告 Markdown 原始檔
-│   ├── 7115056106_hw2_report.pdf# 報告正式 PDF 檔案 (12 頁)
-│   ├── 7115056106_hw2_report_with_appendix.pdf # 主報告結合 GPT 對話附錄之合併 PDF (34 頁)
+│   ├── 7115056106_hw2_report.pdf# 報告正式 PDF 檔案 (13 頁)
+│   ├── 7115056106_hw2_report_with_appendix.pdf # 主報告結合 GPT 對話附錄之合併 PDF (28 頁)
 │   └── generate_report.py       # 跨平台 PDF 報告編譯生成腳本
 └── submission/                  # 作業正式打包壓縮檔與相關繳交附件
     ├── 7115056106_hw2.zip       # 最終作業壓縮檔
@@ -147,8 +145,8 @@ python3 report/generate_report.py
 ## 繳交附件聲明 (Submission Note)
 
 本專案於 `submission/` 資料夾內包含符合課程繳交規格之 ZIP 檔案與相關 PDF 紀錄：
-- `7115056106_hw2_report.pdf`：主研究報告（12 頁）
-- `7115056106_hw2_report_with_appendix.pdf`：主報告結合 GPT 對話附錄之合併 PDF（34 頁）
-- `7115056106_GPT_conversation.pdf`：作業輔助對話紀錄原始檔（22 頁）
-- `7115056106_NotebookLM_export.pdf`：NotebookLM 研究紀錄原始檔（3 頁）
+- `7115056106_hw2_report.pdf`：主研究報告（13 頁）
+- `7115056106_hw2_report_with_appendix.pdf`：主報告結合 GPT 對話附錄之合併 PDF（28 頁）
+- `7115056106_GPT_conversation.pdf`：作業輔助對話紀錄原始檔（15 頁）
+- `7115056106_NotebookLM_export.pdf`：NotebookLM 研究紀錄原始檔（1 頁）
 - SHA-256 校驗碼與來源對應詳見 [ASSIGNMENT_INPUTS.md](materials/ASSIGNMENT_INPUTS.md)。

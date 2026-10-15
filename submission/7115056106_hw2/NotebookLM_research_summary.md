@@ -1,43 +1,67 @@
-# NotebookLM 研究摘要與解法比較
+# NotebookLM 洪水預測與水文回歸研究摘要
 
-## 材料來源與處理方式
+## 1. 材料來源與研究依據
 
-本節依使用者實際提供的 NotebookLM 摘要、六筆來源名稱及三頁匯出 PDF 整理。原始摘要的 `1`、`25`、`6`、`1112`、`5`、`14` 在純文字貼上後失去引用分隔，無法可靠還原成原始編號，因此不猜測數字對應，而將可查證的主張改成具名超連結。查核日期為 2026-10-08（Asia/Taipei）。
+- **筆記本名稱**：非引數貝氏Lasso與變數選擇 - Gemini Notebook
+- **線上來源網址**：https://notebook.google.com/notebook/59067a8c-667d-46d7-b9bc-3c71e19de5a4
+- **匯出檔案**：`7115056106_NotebookLM_export.pdf`（SHA-256：`f01a7c584e9229b52ee9453e14f4370f6c61e8c86f5ed64c45d956a9029680da`）
+- **查核日期**：2026-10-15（Asia/Taipei）
+- **匯入來源數量**：10 個水文與機器學習來源（包含 Kaggle 洪水資料集說明、區域洪水頻率分析 RFFA 論文、Lasso 變數選擇文獻、極端降雨動態模型等）
 
-## NotebookLM 摘要（查核修訂版，超過 100 字）
+---
 
-本研究探討以多元線性回歸預測葡萄牙 Vinho Verde 紅酒品質的適用性。UCI 資料說明指出此資料包含 11 個理化輸入，品質為 0–10 分的感官評分；類別具有順序且分布不平衡，因此可視為回歸或分類問題，也適合研究特徵選擇。原始研究以多元回歸、神經網路及支持向量機比較，結果顯示在其驗證設計與容忍度指標下，SVM 優於多元回歸，但需要較高計算成本。Lasso 與逐步回歸的模擬研究則顯示，Lasso 的樣本外預測較一致，而較強的收縮可提高精簡度與穩定性；該研究來自心理資料情境，不能直接當成紅酒資料的實證結論。品質分數是有序類別，ordinal cumulative model 會直接建模各等級的累積機率與門檻，因此在統計形式上比把分數當等距連續值更貼近資料性質。本作業仍依題目使用 OLS，並以 MAE、RMSE、R²、殘差診斷及 95% 個別預測區間呈現其效果與限制。
+## 2. NotebookLM 研究摘要（真實研究紀錄，超過 100 字）
 
-## 六筆來源查核
+在區域洪水機率（Flood Probability）預測與水文風險評估中，各種模型方法在適用場景、精準度與可解釋性上各有權衡。
 
-1. **Cortez, Cerdeira, Almeida, Matos, and Reis (2009), “Modeling wine preferences by data mining from physicochemical properties.”**  
-   [MIT CSAIL 保存的論文全文](https://projects.csail.mit.edu/wiki/pub/Evodesign/SensoryEvaluationsDatabase/winequality09.pdf)，DOI：`10.1016/j.dss.2009.05.016`。直接支持資料包含 1,599 筆紅酒、以回歸保留品質順序、以誤差容忍度評估，以及在該研究設定下 SVM 優於多元回歸與神經網路。論文亦指出多元回歸較容易解釋，而 SVM 計算成本較高。
+### 一、多元線性回歸（MLR）、樹模型與水文動力模型之優缺點比較
 
-2. **Cortez et al. (2009), Wine Quality, UCI Machine Learning Repository.**  
-   [UCI Wine Quality 資料頁](https://archive.ics.uci.edu/ml/datasets/wine%20quality)，DOI：`10.24432/C56S3T`。直接支持 11 個實數型理化特徵、感官品質目標、無缺失值，以及品質類別有順序且不平衡；UCI 明確指出可作為 classification 或 regression，並建議研究 feature selection。
+1. **多元線性回歸（MLR / 統計回歸模型）**
+   - **優點**：
+     - *物理統計解釋力高*：能透過顯著性檢定（如 $p\text{-value} < 0.05$）與回歸係數，明確量化各環境因子對水流量或洪水發生率的貢獻程度。
+     - *未設站流域的外推泛化穩定*：在區域洪水頻率分析（RFFA）與未設站流域（Ungauged Basins）推估中，搭配適當變數選擇的線性/邏輯回歸（如 Stepwise、Lasso、Logistic Regression）展現出較低的平均絕對相對誤差（MARE 約 50%）與相對偏差（約 20%），且跨區域預測變異度最小。
+     - *高召回率與分類穩定度*：在洪水發生分類任務中，邏輯回歸（Logistic Regression）能達到極高的召回率（Recall = 1.0）與整體準確度（0.91～0.94），有效避免漏報。
+     - *計算快速簡單*：能替代複雜的水力學模型進行大區域與戰略規劃層面的風險初篩。
+   - **缺點**：
+     - *難以直接捕捉複雜非線性關係*：傳統 MLR 假設自變數與應變數為線性關係，必須引入二次項、交互作用項（MNLR）或轉為 Logit 連結函數（MBLR）才能處理非線性動態。
+     - *共線性高度敏感*：當輸入特徵間存在強相關時，普通最小平方法（OLS）會產生係數變異數膨脹（Inflated Variance）與不穩定的估計值。
+     - *依賴嚴格的統計假設*：其參數推論高度依賴殘差的常態性、等變異性與獨立性。
 
-3. **Zhou, Chahal, Gotlib, and Liu (2024), “Comparison of Lasso and Stepwise Regression in Psychological Data.”**  
-   [Methodology 原始期刊頁面](https://meth.psychopen.eu/index.php/meth/article/view/11523)，DOI：`10.5964/meth.11523`。其 Monte Carlo 模擬與實證示例顯示 Lasso 的樣本內選擇較準確、樣本外預測一致性優於 stepwise；較強收縮的 Lasso 較精簡且對抽樣變異更穩健。此來源不是紅酒研究，僅能作為本作業採 Lasso 與 one-standard-error 類型精簡原則的方法依據。
+2. **樹模型（如 XGBoost、LightGBM、Random Forest、CatBoost）**
+   - **優點**：
+     - *擬合非線性與高階交互作用能力強*：無需預先設定函數形式，即可自動捕捉環境與致災因子之間的複雜非線性互動。
+     - *已知資料集預測精度高*：在特定資料集或競賽場景中，Gradient Boosting 模型（如 CatBoost）與隨機森林能取得極高的 $R^2$ 與擬合優度。
+   - **缺點**：
+     - *無法進行外推（Extrapolation）*：樹模型無法預測超越訓練集數值範圍外的極端洪水事件（Out-of-range flood events），在未設站流域或極端氣候情境下易出現顯著低估。
+     - *小樣本易過擬合（Overfitting）*：在資料量較小或包含雜訊時，單一決策樹與隨機森林極易過度擬合訓練集，導致測試集誤差偏高。
+     - *黑箱特性與物理解釋性弱*：相比於線性模型，樹模型的內部決策邏輯較為複雜，較難進行直接的物理推論。
 
-4. **Gambarota and Altoè (2024), “Ordinal regression models made easy: A tutorial on parameter interpretation, data simulation and power analysis.”**  
-   [International Journal of Psychology 原始期刊頁面](https://onlinelibrary.wiley.com/doi/10.1002/ijop.13243)，DOI：`10.1002/ijop.13243`。文章將 ordinal regression 定義為明確考慮反應變數順序、而非把它視為等距數值的模型，並說明 cumulative model 以潛在變數及門檻表示有序結果。此來源支持將 ordinal regression 列為後續方法，而不表示它已在本作業資料上獲得較佳測試成績。
+3. **水文動力模型（如 SWAT、SWMM、HEC-RAS）**
+   - **優點**：
+     - *基於物理守恆定律*：模型機制建立在嚴謹的質量守恆與水力學機制上，能真實模擬降雨-逕流過程與管網匯流動態。
+     - *無需歷史觀測標籤*：可直接透過物理參數設定推算無觀測流域或未來極端降雨情境下的流量過程線與淹水範圍。
+   - **缺點**：
+     - *建構與參數化成本極高*：需要極其詳細的高解析度地形（DEM）、土壤、土地利用與管網幾何拓撲數據，參數校正極為耗時。
+     - *簡化物理機制的系統性偏差*：物理公式的簡化假設（如蒸發散或土壤水分過度簡化）常導致模擬值與實際觀測間存在系統性殘差。
 
-5. **Kyle M. Lang, “Regression Assumptions & Diagnostics,” Fundamental Techniques in Data Science with R.**  
-   [原始課程投影片](https://www.kylemlang.com/fundamentals/wk5/lecture/assumptions.pdf)。內容支持檢查線性模型假設、離群值、高槓桿及影響觀測，也提醒即使觀測具有影響力，若無合理依據仍不能任意刪除；可考慮 robust regression。這與本作業保留極端觀測並報告 Cook's distance 的處理一致。
+---
 
-6. **Rotenberg, Faria, and Caffo (2026), “Classifier Pooling for Modern Ordinal Classification.”**  
-   [arXiv 原始預印本](https://arxiv.org/abs/2603.17278)，arXiv：`2603.17278`。文章提出可將一般分類器包裝成 ordinal classification 的方法，並在多個真實資料集上呈現其優勢，特別是樣本較少或類別較多的情境。這是一篇 2026 年預印本，並未直接驗證本作業的紅酒切分，因此只列為新式替代方案。
+### 二、20 個環境與基礎設施因子下，Lasso 正則化與殘差診斷對建立 95% 預測區間的重要性與限制
 
-## 本作業與其他解法比較
+1. **Lasso 正則化（$L_1$ Penalty）的重要性與限制**
+   - **重要性**：
+     - *自動變數選擇與模型稀疏性（Sparsity）*：面對 20 個環境與基礎設施因子（如降雨量、坡度、透水率、管徑、管道長度等），Lasso 透過新增 $L_1$ 懲罰項（$\lambda \sum |\beta_j|$），能將不重要的因子係數壓縮至恰好為 0，自動篩選出最具預測價值的少數關鍵因子。
+     - *抑制共線性與過擬合*：環境與管網變數間常存在強烈相關（如管徑與累積管長、地形濕潤指數與坡度），Lasso 能限制係數大小，降低多重共線性造成的變異數膨脹與過擬合風險。
+     - *提升跨區域外推穩定度*：在未設站流域的洪水分位數估計中，Lasso 回歸比普通回歸與隨機森林擁有更低的預測誤差（MARE 約 0.50～0.55）與最低的樣本間變異度。
+   - **限制**：
+     - *高共線性下的隨機剔除問題*：當 20 個因子中存在高度相關的特徵群（如相關係數 $>0.95$）時，Lasso 往往會隨機保留其中一個而剔除其他同樣具預測價值的變數，可能造成重要特徵遺漏。
+     - *過度懲罰重要係數（Overshrinking）*：傳統 Lasso 對所有係數施加相同的懲罰參數 $\lambda$，容易對較大的重要係數產生過度壓縮，進而引入估計偏差。
+     - *對變數尺度高度敏感*：套用 $L_1$ 懲罰前必須對 20 個變數進行標準化（Standardization / Z-score scaling），否則單位量級會直接扭曲懲罰效果。
 
-| 方法 | 來源或本作業證據 | 優點 | 限制／本作業定位 |
-|---|---|---|---|
-| 11 特徵 OLS | 本作業固定測試集：MAE 0.503214、RMSE 0.657947、R² 0.341849 | 最佳測試指標、容易解釋、符合指定方法 | 連續且無界輸出不完全符合有序評分；常態與等變異假設未通過 |
-| Lasso 選擇後 4 特徵 OLS | 本作業固定測試集：MAE 0.511868、RMSE 0.664149、R² 0.329384 | 特徵減少 63.64%，準確度只小幅下降；較易部署與解釋 | 沒有改善測試準確度；選中特徵不代表因果 |
-| SVM regression | Cortez et al. (2009) 在其交叉驗證及容忍度設定下優於 multiple regression | 可表示非線性關係，原始紅酒研究結果較佳 | 較耗計算且較難解釋；因切分及指標不同，不能把原論文數字與本作業 RMSE 直接比較 |
-| Cumulative ordinal regression | Gambarota & Altoè (2024) 的方法論 | 直接尊重品質等級順序與門檻，輸出各等級機率 | 需檢查 proportional-odds 等假設；本作業未實際 fit，不能聲稱表現更好 |
-| Modern ordinal classifier pooling | Rotenberg et al. (2026) 預印本 | 可結合現代分類器並利用類別順序 | 較新、可解釋性及實作複雜度較高；未在本作業資料上驗證 |
-
-## 綜合結論
-
-本作業應把 11 特徵 OLS 視為測試預測表現較佳的指定基準，把 4 特徵 OLS 視為準確度略降但更精簡的替代方案。SVM 是原始酒品質研究中較強的非線性解法，而 cumulative ordinal regression 在資料型態上更自然；兩者可作為未來比較模型，不能在未用相同資料切分與指標實測前宣稱優於本作業模型。原 NotebookLM 摘要中的 BIC stepwise 極簡組合主張未在上述六筆來源中找到足夠直接證據，因此不納入查核修訂版。
+2. **殘差診斷（常態性與等變異性）對建立 95% 預測區間的重要性與限制**
+   - **重要性**：
+     - *確保參數化預測區間的統計可靠性*：多元線性/非線性回歸在建構 95% 預測區間（通常為 $\hat{y} \pm 1.96 \times SE$）時，前提是殘差 $\varepsilon$ 必須滿足期望值為零、常態分佈 $\varepsilon \sim N(0, \sigma^2)$ 以及等變異性（Homoscedasticity）。
+     - *驗證預測邊界涵蓋率*：透過 Normal Q-Q 圖驗證殘差常態性、殘差對擬合值圖驗證等變異性，能確保模型的預測標準誤（SE）不會隨擬合值大小而發生異變異，從而維持 95% 涵蓋率的真實性。
+   - **限制**：
+     - *二元機率模型不適用傳統殘差診斷*：當預測目標為二元洪水發生機率（Flood Probability，如發生/未發生）時，應變數為二分變數（0 或 1），傳統殘差常態性與等變異性診斷將失真。此時需改用偏差（Deviance）、AIC 或 Hosmer-Lemeshow 檢定來評估模型適合度。
+     - *Lasso 點估計無法直接導出區間不確定性*：Lasso 正則化引入了估計偏差與變數選擇步驟，使得傳統基於無偏估計的標準誤公式無法直接套用。若殘差存在異變異或重尾（Heavy-tailed）分佈（極端洪水常見特徵），單靠傳統殘差診斷建立的 95% 預測區間會失效，需要改採無參數 Bootstrapping、貝氏 Lasso（Bayesian Lasso）或極端值理論（GPD）來精確估算不確定性區間。
